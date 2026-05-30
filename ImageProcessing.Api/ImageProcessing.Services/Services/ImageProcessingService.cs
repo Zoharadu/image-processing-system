@@ -1,6 +1,8 @@
 using ImageProcessing.Core.Enums;
 using ImageProcessing.Core.Interfaces;
 using ImageProcessing.Core.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace ImageProcessing.Services.Services;
 
@@ -16,11 +18,16 @@ public class ImageProcessingService : IImageProcessingService
 
     private readonly IImageService _imageService;
     private readonly TimeProvider _timeProvider;
+    private readonly ILogger<ImageProcessingService> _logger;
 
-    public ImageProcessingService(IImageService imageService, TimeProvider? timeProvider = null)
+    public ImageProcessingService(
+        IImageService imageService,
+        TimeProvider? timeProvider = null,
+        ILogger<ImageProcessingService>? logger = null)
     {
         _imageService = imageService;
         _timeProvider = timeProvider ?? TimeProvider.System;
+        _logger = logger ?? NullLogger<ImageProcessingService>.Instance;
     }
 
     public async Task RunImagePipelineAsync(Guid imageId, CancellationToken cancellationToken = default)
@@ -29,14 +36,25 @@ public class ImageProcessingService : IImageProcessingService
 
         if (image is null)
         {
+            _logger.LogWarning("Cannot start processing; image {ImageId} was not found.", imageId);
             return;
         }
 
+        _logger.LogInformation("Processing started for image {ImageId}.", imageId);
+
         await ImagePipelineAsync(image, cancellationToken);
+
+        _logger.LogInformation(
+            "Pipeline completed for image {ImageId} with final status {Status}.",
+            imageId, image.Status);
     }
 
     private async Task ImagePipelineAsync(ImageItem image, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(
+            "Pipeline step {PipelineStep} started for image {ImageId}.",
+            PipelineType.ImagePipeline, image.Id);
+
         image.PipelineHistory.Add(PipelineType.ImagePipeline);
         _imageService.Update(image);
 
@@ -68,15 +86,23 @@ public class ImageProcessingService : IImageProcessingService
         {
             image.Status = ImageStatus.ProcessError;
             _imageService.Update(image);
+            _logger.LogWarning(
+                "Processing failed for image {ImageId}; width {Width} is below the minimum.",
+                image.Id, image.Width);
             return;
         }
 
         image.Status = ImageStatus.Finished;
         _imageService.Update(image);
+        _logger.LogInformation("Processing finished for image {ImageId}.", image.Id);
     }
 
     private async Task SquarePipelineAsync(ImageItem image, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(
+            "Pipeline step {PipelineStep} started for image {ImageId}.",
+            PipelineType.SquarePipeline, image.Id);
+
         image.PipelineHistory.Add(PipelineType.SquarePipeline);
         _imageService.Update(image);
 
@@ -84,10 +110,15 @@ public class ImageProcessingService : IImageProcessingService
 
         image.Status = ImageStatus.Finished;
         _imageService.Update(image);
+        _logger.LogInformation("Processing finished for image {ImageId}.", image.Id);
     }
 
     private async Task CirclePipelineAsync(ImageItem image, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(
+            "Pipeline step {PipelineStep} started for image {ImageId}.",
+            PipelineType.CirclePipeline, image.Id);
+
         image.PipelineHistory.Add(PipelineType.CirclePipeline);
         _imageService.Update(image);
 
@@ -104,6 +135,10 @@ public class ImageProcessingService : IImageProcessingService
 
     private async Task SlowPipelineAsync(ImageItem image, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(
+            "Pipeline step {PipelineStep} started for image {ImageId}.",
+            PipelineType.SlowPipeline, image.Id);
+
         image.PipelineHistory.Add(PipelineType.SlowPipeline);
         _imageService.Update(image);
 
@@ -117,6 +152,10 @@ public class ImageProcessingService : IImageProcessingService
 
     private async Task StarPipelineAsync(ImageItem image, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(
+            "Pipeline step {PipelineStep} started for image {ImageId}.",
+            PipelineType.StarPipeline, image.Id);
+
         image.PipelineHistory.Add(PipelineType.StarPipeline);
         _imageService.Update(image);
 
