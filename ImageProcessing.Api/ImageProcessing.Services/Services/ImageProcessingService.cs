@@ -15,10 +15,12 @@ public class ImageProcessingService : IImageProcessingService
     private static readonly TimeSpan StarPipelineDelay = TimeSpan.FromMilliseconds(1000);
 
     private readonly IImageService _imageService;
+    private readonly TimeProvider _timeProvider;
 
-    public ImageProcessingService(IImageService imageService)
+    public ImageProcessingService(IImageService imageService, TimeProvider? timeProvider = null)
     {
         _imageService = imageService;
+        _timeProvider = timeProvider ?? TimeProvider.System;
     }
 
     public async Task RunImagePipelineAsync(Guid imageId, CancellationToken cancellationToken = default)
@@ -78,7 +80,7 @@ public class ImageProcessingService : IImageProcessingService
         image.PipelineHistory.Add(PipelineType.SquarePipeline);
         _imageService.Update(image);
 
-        await Task.Delay(SquarePipelineDelay, cancellationToken);
+        await Task.Delay(SquarePipelineDelay, _timeProvider, cancellationToken);
 
         image.Status = ImageStatus.Finished;
         _imageService.Update(image);
@@ -92,7 +94,7 @@ public class ImageProcessingService : IImageProcessingService
         var delayMilliseconds = Random.Shared.Next(
             (int)CirclePipelineMinDelay.TotalMilliseconds,
             (int)CirclePipelineMaxDelay.TotalMilliseconds + 1);
-        await Task.Delay(delayMilliseconds, cancellationToken);
+        await Task.Delay(TimeSpan.FromMilliseconds(delayMilliseconds), _timeProvider, cancellationToken);
 
         image.Width -= 10;
         _imageService.Update(image);
@@ -105,7 +107,7 @@ public class ImageProcessingService : IImageProcessingService
         image.PipelineHistory.Add(PipelineType.SlowPipeline);
         _imageService.Update(image);
 
-        await Task.Delay(SlowPipelineDelay, cancellationToken);
+        await Task.Delay(SlowPipelineDelay, _timeProvider, cancellationToken);
 
         image.Width *= 2;
         _imageService.Update(image);
@@ -118,7 +120,7 @@ public class ImageProcessingService : IImageProcessingService
         image.PipelineHistory.Add(PipelineType.StarPipeline);
         _imageService.Update(image);
 
-        await Task.Delay(StarPipelineDelay, cancellationToken);
+        await Task.Delay(StarPipelineDelay, _timeProvider, cancellationToken);
 
         image.Width *= 2;
         _imageService.Update(image);
@@ -126,9 +128,9 @@ public class ImageProcessingService : IImageProcessingService
         await CirclePipelineAsync(image, cancellationToken);
     }
 
-    private static bool IsCurrentHourBetweenEightAndNineteen()
+    private bool IsCurrentHourBetweenEightAndNineteen()
     {
-        var currentHour = DateTime.Now.Hour;
+        var currentHour = _timeProvider.GetLocalNow().Hour;
 
         return currentHour >= 8 && currentHour <= 19;
     }
