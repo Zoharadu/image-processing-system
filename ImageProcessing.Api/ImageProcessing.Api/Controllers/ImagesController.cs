@@ -70,6 +70,10 @@ public class ImagesController : ControllerBase
 
             _imageService.Add(image);
 
+            _logger.LogInformation(
+                "Image uploaded: {ImageId} ({Width}x{Height}, {FileSizeInBytes} bytes, {Extension}).",
+                id, image.Width, image.Height, image.FileSizeInBytes, extension);
+
             StartBackgroundProcessing(id);
 
             return Accepted(new { id });
