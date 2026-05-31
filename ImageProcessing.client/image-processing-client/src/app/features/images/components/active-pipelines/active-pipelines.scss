@@ -1,0 +1,163 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.active-pipelines {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.active-pipelines__header,
+.chart-card,
+.state-card,
+.pipeline-card {
+  border: 1px solid #dbeafe;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  box-shadow: 0 0.75rem 1.75rem rgb(30 58 138 / 6%);
+}
+
+.active-pipelines__header {
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #2563eb;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  color: #1e3a8a;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 1.875rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+.description {
+  margin: 0.75rem 0 0;
+  color: #52627a;
+  line-height: 1.5;
+}
+
+.state-card {
+  padding: 1.5rem;
+}
+
+.state-card--error {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.state-card__title {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 1.0625rem;
+  font-weight: 650;
+}
+
+.state-card__text {
+  margin: 0.5rem 0 0;
+  color: #52627a;
+  line-height: 1.5;
+}
+
+.state-card--error .state-card__title,
+.state-card--error .state-card__text {
+  color: #b91c1c;
+}
+
+.chart-card {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) 18rem minmax(12rem, 1fr);
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+}
+
+.chart-card__visual {
+  position: relative;
+  width: 18rem;
+  height: 18rem;
+  justify-self: center;
+}
+
+.chart-legend {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chart-legend li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  color: #1f2a44;
+}
+
+.chart-legend__marker {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  box-shadow: 0 0 0 0.25rem #eff6ff;
+}
+
+.chart-legend strong {
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.pipeline-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+
+.pipeline-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.pipeline-card__marker {
+  width: 0.75rem;
+  min-width: 0.75rem;
+  height: 3rem;
+  border-radius: 999px;
+}
+
+.pipeline-card p {
+  margin: 0.5rem 0 0;
+  color: #52627a;
+}
+
+@media (max-width: 56rem) {
+  .chart-card {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card__visual {
+    width: min(18rem, 100%);
+    height: 18rem;
+  }
+}

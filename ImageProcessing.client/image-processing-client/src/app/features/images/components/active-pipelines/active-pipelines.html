@@ -1,0 +1,66 @@
+<section class="active-pipelines">
+  <div class="active-pipelines__header">
+    <p class="eyebrow">Image processing</p>
+    <h1>Active pipelines</h1>
+    <p class="description">Track where images are currently moving through the processing pipeline.</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="state-card" aria-live="polite">
+      <p class="state-card__title">Loading pipelines...</p>
+      <p class="state-card__text">Active pipeline data is on its way.</p>
+    </div>
+  } @else if (errorMessage(); as message) {
+    <div class="state-card state-card--error" aria-live="polite">
+      <p class="state-card__title">Something went wrong</p>
+      <p class="state-card__text">{{ message }}</p>
+    </div>
+  } @else if (pipelineItems().length === 0) {
+    <div class="state-card">
+      <p class="state-card__title">No active pipelines</p>
+      <p class="state-card__text">There are no images being processed right now.</p>
+    </div>
+  } @else {
+    <div class="chart-card">
+      <div class="chart-card__summary">
+        <p class="eyebrow">Current load</p>
+        <h2>{{ totalActiveImages() }} active images</h2>
+        <p class="description">Pipeline segments are sized by the number of active images.</p>
+      </div>
+
+      <div class="chart-card__visual">
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="chartType"
+          aria-label="Active pipelines by active image count"
+          role="img">
+        </canvas>
+      </div>
+
+      <ul class="chart-legend" aria-label="Pipeline chart legend">
+        @for (pipeline of pipelineItems(); track pipeline.pipelineType) {
+          <li>
+            <span class="chart-legend__marker" [style.background-color]="pipeline.color"></span>
+            <span>{{ pipeline.name }}</span>
+            <strong>{{ pipeline.activeImagesCount }}</strong>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="pipeline-list" aria-label="Active pipeline list">
+      @for (pipeline of pipelineItems(); track pipeline.pipelineType) {
+        <article class="pipeline-card">
+          <div class="pipeline-card__marker" [style.background-color]="pipeline.color"></div>
+
+          <div>
+            <h2>{{ pipeline.name }}</h2>
+            <p>{{ getActiveImageLabel(pipeline.activeImagesCount) }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
