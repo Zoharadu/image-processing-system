@@ -441,3 +441,6 @@ FodyWeavers.xsd
 **/pnpm-debug.log*
 **/.npm/
 **/.eslintcache
+
+# Backend uploaded files
+ImageProcessing.Api/ImageProcessing.Api/ImageStorage/

@@ -1,0 +1,30 @@
+<section class="upload-card">
+  <div class="upload-card__header">
+    <p class="eyebrow">Image processing</p>
+    <h1>Upload an image</h1>
+    <p class="description">Choose one image file to start a new processing request.</p>
+  </div>
+
+  <label class="file-picker">
+    <span>Select image</span>
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+  </label>
+
+  @if (selectedFile(); as file) {
+    <p class="file-name">Selected file: {{ file.name }}</p>
+  } @else {
+    <p class="file-name file-name--empty">No file selected.</p>
+  }
+
+  <button type="button" class="upload-button" [disabled]="!canUpload()" (click)="upload()">
+    {{ isUploading() ? 'Uploading...' : 'Upload' }}
+  </button>
+
+  @if (uploadedImageId(); as imageId) {
+    <p class="success-message">Upload complete. Image id: {{ imageId }}</p>
+  }
+
+  @if (errorMessage(); as message) {
+    <p class="error-message">{{ message }}</p>
+  }
+</section>
