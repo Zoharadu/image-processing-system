@@ -1,0 +1,61 @@
+<section class="image-details">
+  <a class="back-link" routerLink="/images">Back to completed images</a>
+
+  @if (isLoading()) {
+    <div class="state-card" aria-live="polite">
+      <p class="state-card__title">Loading image details...</p>
+      <p class="state-card__text">We are gathering the image and pipeline history.</p>
+    </div>
+  } @else if (errorMessage(); as message) {
+    <div class="state-card state-card--error" aria-live="polite">
+      <p class="state-card__title">Something went wrong</p>
+      <p class="state-card__text">{{ message }}</p>
+    </div>
+  } @else if (image(); as imageDetails) {
+    <div class="details-card">
+      <div class="image-preview">
+        <img [src]="getImageDownloadUrl(imageDetails.id)" [alt]="imageDetails.fileName" />
+      </div>
+
+      <div class="details-card__content">
+        <p class="eyebrow">Image details</p>
+        <h1>{{ imageDetails.fileName }}</h1>
+
+        <dl class="metadata-grid">
+          <div>
+            <dt>Width</dt>
+            <dd>{{ imageDetails.width }} px</dd>
+          </div>
+          <div>
+            <dt>Height</dt>
+            <dd>{{ imageDetails.height }} px</dd>
+          </div>
+          <div>
+            <dt>Status</dt>
+            <dd>{{ getStatusLabel(imageDetails.status) }}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <section class="timeline-card" aria-labelledby="pipeline-history-title">
+      <div class="timeline-card__header">
+        <p class="eyebrow">Pipeline History</p>
+        <h2 id="pipeline-history-title">Processing timeline</h2>
+      </div>
+
+      @if (imageDetails.pipelineHistory.length === 0) {
+        <p class="empty-timeline">No pipeline history is available for this image yet.</p>
+      } @else {
+        <ol class="timeline">
+          @for (pipeline of imageDetails.pipelineHistory; track $index) {
+            <li class="timeline__item">
+              <span class="timeline__marker" aria-hidden="true"></span>
+              <span class="timeline__name">{{ getPipelineName(pipeline) }}</span>
+            </li>
+          }
+        </ol>
+      }
+    </section>
+  }
+</section>

@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { ImageStatus } from '../../../../core/enums/image-status.enum';
 import { ImageListDto } from '../../../../core/models/image-list-dto.model';
@@ -6,7 +7,7 @@ import { ImageApiService } from '../../../../core/services/image-api.service';
 
 @Component({
   selector: 'app-completed-images',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './completed-images.html',
   styleUrl: './completed-images.scss'
 })

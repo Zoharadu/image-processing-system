@@ -23,7 +23,7 @@
   } @else {
     <div class="image-grid">
       @for (image of images(); track image.id) {
-        <article class="image-card">
+        <a class="image-card" [routerLink]="['/images', image.id]">
           <img class="image-card__preview" [src]="getImageDownloadUrl(image.id)" [alt]="image.fileName" />
 
           <div class="image-card__body">
@@ -43,7 +43,7 @@
               </div>
             </dl>
           </div>
-        </article>
+        </a>
       }
     </div>
   }

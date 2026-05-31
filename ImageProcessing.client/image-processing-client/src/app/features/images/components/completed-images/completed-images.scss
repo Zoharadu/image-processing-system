@@ -90,6 +90,23 @@ h1 {
   border-radius: 0.875rem;
   background: #ffffff;
   box-shadow: 0 0.75rem 1.75rem rgb(30 58 138 / 6%);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.image-card:hover,
+.image-card:focus-visible {
+  border-color: #93c5fd;
+  box-shadow: 0 1rem 2rem rgb(30 58 138 / 10%);
+  transform: translateY(-0.125rem);
+}
+
+.image-card:focus-visible {
+  outline: 0.1875rem solid #bfdbfe;
+  outline-offset: 0.1875rem;
 }
 
 .image-card__preview {
