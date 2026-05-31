@@ -1,59 +1,43 @@
-# ImageProcessingClient
+# Image Processing
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+Image Processing is a full-stack application for uploading images, running them through backend processing pipelines, and viewing completed images with their processing history. The Angular client provides upload, completed image list, image details, and active pipeline dashboard pages. The .NET backend stores uploaded images, processes them in the background, and exposes the API used by the client.
 
-## Development server
+## Backend Startup
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+From the backend folder:
 
 ```bash
-ng generate component component-name
+cd ../../ImageProcessing.Api
+dotnet run --project ImageProcessing.Api/ImageProcessing.Api.csproj --launch-profile https
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The HTTPS launch profile serves the API at `https://localhost:7194`, which matches the frontend `apiBaseUrl`.
+
+## Frontend Startup
+
+From this frontend folder:
 
 ```bash
-ng generate --help
+npm install
+npm start
 ```
 
-## Building
+Open `http://localhost:4200/` after the Angular development server starts.
 
-To build the project run:
+## Available Routes
 
-```bash
-ng build
-```
+- `/` - upload an image.
+- `/images` - view completed or failed images.
+- `/images/:id` - view image details and pipeline history.
+- `/pipelines` - view active pipeline counts and pie chart.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Technologies Used
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Angular 21
+- TypeScript
+- RxJS
+- Chart.js with ng2-charts
+- ASP.NET Core 8
+- C#
+- ImageSharp
+- xUnit
