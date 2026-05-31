@@ -1,0 +1,40 @@
+<section class="active-pipelines">
+  <div class="active-pipelines__header">
+    <p class="eyebrow">Image processing</p>
+    <h1>Active pipelines</h1>
+    <p class="description">See which processing pipelines are currently working through images.</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="state-card" aria-live="polite">
+      <p class="state-card__title">Loading pipelines...</p>
+      <p class="state-card__text">Checking active image processing work.</p>
+    </div>
+  } @else if (errorMessage(); as message) {
+    <div class="state-card state-card--error" aria-live="polite">
+      <p class="state-card__title">Something went wrong</p>
+      <p class="state-card__text">{{ message }}</p>
+    </div>
+  } @else if (pipelines().length === 0) {
+    <div class="state-card">
+      <p class="state-card__title">No active pipelines</p>
+      <p class="state-card__text">There are no images being processed right now.</p>
+    </div>
+  } @else {
+    <div class="pipeline-list">
+      @for (pipeline of pipelines(); track pipeline.pipelineType) {
+        <article class="pipeline-card">
+          <div>
+            <p class="pipeline-card__label">Pipeline</p>
+            <h2>{{ getPipelineName(pipeline.pipelineType) }}</h2>
+          </div>
+
+          <div class="pipeline-card__count">
+            <span class="pipeline-card__count-value">{{ pipeline.activeImagesCount }}</span>
+            <span class="pipeline-card__count-label">active images</span>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
