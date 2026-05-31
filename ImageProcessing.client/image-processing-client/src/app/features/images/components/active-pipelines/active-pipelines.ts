@@ -1,7 +1,8 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { finalize } from 'rxjs';
+import { finalize, interval } from 'rxjs';
 
 import { PipelineType } from '../../../../core/enums/pipeline-type.enum';
 import { PipelineStatusDto } from '../../../../core/models/pipeline-status-dto.model';
@@ -20,6 +21,7 @@ interface PipelineViewModel extends PipelineStatusDto {
 })
 export class ActivePipelines implements OnInit {
   private readonly imageApiService = inject(ImageApiService);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly segmentColors = ['#2563eb', '#38bdf8', '#60a5fa', '#0ea5e9', '#93c5fd'];
 
   protected readonly pipelines = signal<PipelineStatusDto[]>([]);
@@ -80,19 +82,31 @@ export class ActivePipelines implements OnInit {
 
   ngOnInit(): void {
     this.loadActivePipelines();
+    interval(20000)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.loadActivePipelines(false));
   }
 
   protected getActiveImageLabel(count: number): string {
     return count === 1 ? '1 active image' : `${count} active images`;
   }
 
-  private loadActivePipelines(): void {
-    this.isLoading.set(true);
+  private loadActivePipelines(showLoading = true): void {
+    if (showLoading) {
+      this.isLoading.set(true);
+    }
     this.errorMessage.set(null);
 
     this.imageApiService
       .getActivePipelines()
-      .pipe(finalize(() => this.isLoading.set(false)))
+      .pipe(
+        finalize(() => {
+          if (showLoading) {
+            this.isLoading.set(false);
+          }
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe({
         next: (pipelines) => this.pipelines.set(pipelines),
         error: () => {
