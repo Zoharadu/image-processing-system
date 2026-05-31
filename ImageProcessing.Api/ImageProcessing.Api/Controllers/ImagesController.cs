@@ -52,8 +52,6 @@ public class ImagesController : ControllerBase
                 await file.CopyToAsync(stream, cancellationToken);
             }
 
-            // Identify reads only header metadata (width/height); it does not decode
-            // pixel data or modify the file on disk.
             var imageInfo = await Image.IdentifyAsync(filePath, cancellationToken);
 
             var image = new ImageItem
@@ -153,8 +151,6 @@ public class ImagesController : ControllerBase
 
     private void StartBackgroundProcessing(Guid imageId)
     {
-        // Fire-and-forget on a fresh DI scope; the request scope is disposed once the
-        // response returns, so scoped services must not be reused across that boundary.
         _ = Task.Run(async () =>
         {
             try

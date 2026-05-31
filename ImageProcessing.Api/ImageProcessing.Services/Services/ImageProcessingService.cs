@@ -10,11 +10,11 @@ public class ImageProcessingService : IImageProcessingService
 {
     private const long ThreeMegabytesInBytes = 3 * 1024 * 1024;
 
-    private static readonly TimeSpan SquarePipelineDelay = TimeSpan.FromMilliseconds(500);
-    private static readonly TimeSpan CirclePipelineMinDelay = TimeSpan.FromMilliseconds(1500);
-    private static readonly TimeSpan CirclePipelineMaxDelay = TimeSpan.FromMilliseconds(3000);
-    private static readonly TimeSpan SlowPipelineDelay = TimeSpan.FromMilliseconds(1500);
-    private static readonly TimeSpan StarPipelineDelay = TimeSpan.FromMilliseconds(1000);
+    private static readonly TimeSpan SquarePipelineDelay = TimeSpan.FromMilliseconds(500);//FromSeconds(30)
+    private static readonly TimeSpan CirclePipelineMinDelay = TimeSpan.FromMilliseconds(1500);//FromSeconds(15)
+    private static readonly TimeSpan CirclePipelineMaxDelay = TimeSpan.FromMilliseconds(3000);//FromSeconds(30)
+    private static readonly TimeSpan SlowPipelineDelay = TimeSpan.FromMilliseconds(1500);//FromSeconds(15)
+    private static readonly TimeSpan StarPipelineDelay = TimeSpan.FromMilliseconds(1000);//FromSeconds(10)
 
     private readonly IImageService _imageService;
     private readonly TimeProvider _timeProvider;
