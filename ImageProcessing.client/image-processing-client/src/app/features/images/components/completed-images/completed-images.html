@@ -1,0 +1,50 @@
+<section class="completed-images">
+  <div class="completed-images__header">
+    <p class="eyebrow">Image processing</p>
+    <h1>Completed images</h1>
+    <p class="description">Browse images that have finished processing.</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="state-card" aria-live="polite">
+      <p class="state-card__title">Loading images...</p>
+      <p class="state-card__text">Your completed images are on their way.</p>
+    </div>
+  } @else if (errorMessage(); as message) {
+    <div class="state-card state-card--error" aria-live="polite">
+      <p class="state-card__title">Something went wrong</p>
+      <p class="state-card__text">{{ message }}</p>
+    </div>
+  } @else if (images().length === 0) {
+    <div class="state-card">
+      <p class="state-card__title">No completed images yet</p>
+      <p class="state-card__text">Upload an image to start processing, then check back here when it is complete.</p>
+    </div>
+  } @else {
+    <div class="image-grid">
+      @for (image of images(); track image.id) {
+        <article class="image-card">
+          <img class="image-card__preview" [src]="getImageDownloadUrl(image.id)" [alt]="image.fileName" />
+
+          <div class="image-card__body">
+            <h2>{{ image.fileName }}</h2>
+            <dl class="image-card__metadata">
+              <div>
+                <dt>Width</dt>
+                <dd>{{ image.width }} px</dd>
+              </div>
+              <div>
+                <dt>Height</dt>
+                <dd>{{ image.height }} px</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd>{{ getStatusLabel(image.status) }}</dd>
+              </div>
+            </dl>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

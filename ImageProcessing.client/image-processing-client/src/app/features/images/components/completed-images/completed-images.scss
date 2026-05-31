@@ -1,0 +1,142 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.completed-images {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.completed-images__header {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  border: 1px solid #dbeafe;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  box-shadow: 0 0.75rem 1.75rem rgb(30 58 138 / 6%);
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #2563eb;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 1.875rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.description {
+  margin: 0.75rem 0 0;
+  color: #52627a;
+  line-height: 1.5;
+}
+
+.state-card {
+  padding: 1.5rem;
+  border: 1px solid #dbeafe;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  box-shadow: 0 0.75rem 1.75rem rgb(30 58 138 / 6%);
+}
+
+.state-card--error {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.state-card__title {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 1.0625rem;
+  font-weight: 650;
+}
+
+.state-card__text {
+  margin: 0.5rem 0 0;
+  color: #52627a;
+  line-height: 1.5;
+}
+
+.state-card--error .state-card__title,
+.state-card--error .state-card__text {
+  color: #b91c1c;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 13rem);
+  gap: 1.25rem;
+  justify-content: center;
+}
+
+.image-card {
+  display: grid;
+  justify-items: center;
+  width: 13rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 1rem;
+  border: 1px solid #dbeafe;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  box-shadow: 0 0.75rem 1.75rem rgb(30 58 138 / 6%);
+}
+
+.image-card__preview {
+  display: block;
+  width: 10rem;
+  height: 10rem;
+  border: 1px solid #dbeafe;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  object-fit: contain;
+}
+
+.image-card__body {
+  width: 100%;
+  padding: 1rem 0 0;
+}
+
+h2 {
+  margin: 0;
+  color: #1f2a44;
+  font-size: 0.95rem;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.image-card__metadata {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.875rem 0 0;
+}
+
+.image-card__metadata div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+dt {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+dd {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: right;
+}
